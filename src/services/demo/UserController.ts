@@ -1,6 +1,7 @@
 /* eslint-disable */
 // 该文件由 OneAPI 自动生成，请勿手动修改！
 import { request } from '@umijs/max';
+import { API_ENDPOINTS } from '../apiEndpoints';
 
 /** 此处后端没有提供注释 GET /api/v1/queryUserList */
 export async function queryUserList(
@@ -15,13 +16,16 @@ export async function queryUserList(
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.Result_PageInfo_UserInfo__>('/api/v1/queryUserList', {
-    method: 'GET',
-    params: {
-      ...params,
+  return request<API.Result_PageInfo_UserInfo__>(
+    API_ENDPOINTS.USER.QUERY_USER_LIST,
+    {
+      method: 'GET',
+      params: {
+        ...params,
+      },
+      ...(options || {}),
     },
-    ...(options || {}),
-  });
+  );
 }
 
 /** 此处后端没有提供注释 POST /api/v1/user */
@@ -29,7 +33,7 @@ export async function addUser(
   body?: API.UserInfoVO,
   options?: { [key: string]: any },
 ) {
-  return request<API.Result_UserInfo_>('/api/v1/user', {
+  return request<API.Result_UserInfo_>(API_ENDPOINTS.USER.ADD_USER, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -49,7 +53,7 @@ export async function getUserDetail(
   options?: { [key: string]: any },
 ) {
   const { userId: param0 } = params;
-  return request<API.Result_UserInfo_>(`/api/v1/user/${param0}`, {
+  return request<API.Result_UserInfo_>(API_ENDPOINTS.USER.GET_USER_DETAIL, {
     method: 'GET',
     params: { ...params },
     ...(options || {}),

@@ -80,8 +80,24 @@ export default defineConfig({
         // 可以继续添加更多的子菜单项
       ],
     },
+    // 添加登录页面路由
+    {
+      path: '/login',
+      component: './Login',
+      layout: false, // 设置为false，表示不使用默认的布局
+    },
+    // 添加404页面路由
+    {
+      path: '/404',
+      component: './404',
+      layout: false, // 设置为false，表示不使用默认的布局
+    },
     // 默认重定向到404页面或其他指定页面
-    { path: '*', redirect: '/404' },
+    {
+      path: '*',
+      redirect: '/404',
+      layout: false, // 设置为false，表示不使用默认的布局
+    },
   ],
   npmClient: 'pnpm',
 });
