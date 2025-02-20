@@ -1,24 +1,19 @@
+import services from '@/services/user';
 import { useNavigate } from '@umijs/max'; // 替换 useHistory 为 useNavigate
 import { Button, Form, Input, message } from 'antd';
 import React from 'react';
-import request from 'umi-request';
+
+const { accountLogin } = services.UserController;
 
 const Login: React.FC = () => {
   const navigate = useNavigate(); // 替换 useHistory 为 useNavigate
 
-  const login = async (params: { username: string; password: string }) => {
-    console.log('Sending login request with params:', params); // 添加日志
-    return request('/api/login', {
-      method: 'POST',
-      data: params,
-    });
-  };
-
   const onFinish = async (values: { username: string; password: string }) => {
     try {
-      const response = await login(values);
+      const response = await accountLogin(values);
       console.log('Login response:', response); // 添加日志
-      if (response.success) {
+      if (response.code === '00000') {
+        localStorage.setItem('token', response.data?.tokenValue as string);
         message.success('登录成功');
         navigate('/'); // 替换 history.push 为 navigate
       } else {

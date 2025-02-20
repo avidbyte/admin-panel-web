@@ -3,21 +3,21 @@
 
 declare namespace API {
   interface PageInfo {
-    /** 
-1 */
+    /**
+         1 */
     current?: number;
     pageSize?: number;
     total?: number;
     list?: Array<Record<string, any>>;
   }
 
-  interface PageInfo_DemoInfo_ {
-    /** 
-1 */
+  interface PageInfo_UserInfo_ {
+    /**
+         1 */
     current?: number;
     pageSize?: number;
     total?: number;
-    list?: Array<DemoInfo>;
+    list?: Array<UserInfo>;
   }
 
   interface Result {
@@ -44,24 +44,50 @@ declare namespace API {
     data?: string;
   }
 
-  type DemoGenderEnum = 'MALE' | 'FEMALE';
+  type UserGenderEnum = 'MALE' | 'FEMALE';
 
-  interface DemoInfo {
+  interface UserInfo {
     id?: string;
+    username?: string;
     name?: string;
     /** nick */
     nickName?: string;
     /** email */
     email?: string;
-    gender?: DemoGenderEnum;
+    gender?: UserGenderEnum;
   }
 
-  interface DemoInfoVO {
+  interface UserInfoVO {
     name?: string;
     /** nick */
     nickName?: string;
     /** email */
     email?: string;
+  }
+
+  interface UserLogin {
+    username?: string;
+    password?: string;
+  }
+
+  interface Result_UserLogin_ {
+    code?: string;
+    message?: string;
+    data?: UserLoginInfo;
+  }
+
+  interface UserLoginInfo {
+    tokenName?: string;
+    tokenValue?: string;
+    isLogin?: boolean;
+    loginId?: string;
+    loginType?: string;
+    tokenTimeout?: number;
+    sessionTimeout?: number;
+    tokenSessionTimeout?: number;
+    tokenActiveTimeout?: number;
+    loginDevice?: string;
+    tag?: string;
   }
 
   type definitions_0 = null;
