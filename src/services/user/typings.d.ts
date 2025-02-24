@@ -90,5 +90,28 @@ declare namespace API {
     tag?: string;
   }
 
+  interface UserCreateForm {
+    username?: string;
+    password?: string;
+    email?: string;
+    callingCode?: string;
+    phone?: string;
+    gender?: UserGenderEnum;
+    status?: number;
+    remark?: string;
+  }
+
+  interface User_Update_Form {
+    userId?: string;
+    username?: string;
+    password?: string;
+    email?: string;
+    callingCode?: string;
+    phone?: string;
+    gender?: UserGenderEnum;
+    status?: number;
+    remark?: string;
+  }
+
   type definitions_0 = null;
 }

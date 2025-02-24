@@ -5,6 +5,10 @@ import {
   PageContainer,
   ProDescriptions,
   ProDescriptionsItemProps,
+  ProForm,
+  ProFormGroup,
+  ProFormSelect,
+  ProFormText,
   ProTable,
 } from '@ant-design/pro-components';
 import { Button, Divider, Drawer, message } from 'antd';
@@ -19,7 +23,7 @@ const { addUser, queryUserList, deleteUser, modifyUser } =
  * 添加节点
  * @param fields
  */
-const handleAdd = async (fields: API.UserInfo) => {
+const handleAdd = async (fields: API.UserCreateForm) => {
   const hide = message.loading('正在添加');
   try {
     await addUser({ ...fields });
@@ -95,14 +99,7 @@ const TableList: React.FC<unknown> = () => {
       title: 'UserId',
       dataIndex: 'userId',
       tip: '用户唯一Id',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '名称为必填项',
-          },
-        ],
-      },
+      hideInForm: true, // 这个字段不会在表单中显示
     },
     {
       title: '用户名',
@@ -134,11 +131,31 @@ const TableList: React.FC<unknown> = () => {
     {
       title: '性别',
       dataIndex: 'gender',
-      hideInForm: true,
       valueEnum: {
         0: { text: '男', status: 'MALE' },
         1: { text: '女', status: 'FEMALE' },
       },
+    },
+    {
+      title: '头像路径',
+      dataIndex: 'avatar',
+      hideInTable: true, // 这个字段不会在表格中显示
+      hideInForm: true, // 这个字段不会在表单中显示
+      valueType: 'text',
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      valueEnum: {
+        0: { text: '正常', status: '0' },
+        1: { text: '停用', status: '1' },
+      },
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      valueType: 'date',
+      hideInForm: true, // 这个字段不会在表单中显示
     },
     {
       title: '操作',
@@ -227,8 +244,8 @@ const TableList: React.FC<unknown> = () => {
         onCancel={() => handleModalVisible(false)}
         modalVisible={createModalVisible}
       >
-        <ProTable<API.UserInfo, API.UserInfo>
-          onSubmit={async (value) => {
+        <ProForm<API.UserCreateForm>
+          onFinish={async (value) => {
             const success = await handleAdd(value);
             if (success) {
               handleModalVisible(false);
@@ -237,10 +254,31 @@ const TableList: React.FC<unknown> = () => {
               }
             }
           }}
-          rowKey="id"
-          type="form"
-          columns={columns}
-        />
+        >
+          {columns.map((column) => (
+            <ProFormGroup key={column.dataIndex}>
+              {column.valueEnum ? (
+                <ProFormSelect
+                  name={column.dataIndex as string}
+                  label={column.title as string}
+                  options={Object.entries(column.valueEnum).map(
+                    ([key, value]) => ({
+                      label: value.text,
+                      value: key,
+                    }),
+                  )}
+                  rules={column.formItemProps?.rules || []}
+                />
+              ) : (
+                <ProFormText
+                  name={column.dataIndex as string}
+                  label={column.title as string}
+                  rules={column.formItemProps?.rules || []}
+                />
+              )}
+            </ProFormGroup>
+          ))}
+        </ProForm>
       </CreateForm>
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
